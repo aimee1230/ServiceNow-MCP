@@ -82,12 +82,33 @@ FIELDS_DESC = "Optional comma-separated fields to return. Empty = all fields."
 
 mcp = FastMCP(
     name="ServiceNow MCP Server",
-    instructions=(
-        "Tools for a ServiceNow instance: IT incidents (read, create, update) and HR data (cases, services, "
-        "profiles; read-only). For one known record use 'identifier'; to search use 'query' with ServiceNow "
-        "encoded-query syntax. Numbers: INC0010001 (incident), HRC0000184 (HR case), HRP0000350 (HR profile). "
-        "When creating or updating incidents, people may be given as username, email or full name and groups "
-        "by name; the server resolves them. ServiceNow permissions remain authoritative."),
+   instructions=(
+    "This MCP server provides ServiceNow tools for IT Incident Management "
+    "and HR Service Management.\n\n"
+
+    "INCIDENT MANAGEMENT: Use get_incidents to retrieve or search incidents, "
+    "create_incident to raise new IT tickets, and update_incident to modify "
+    "existing incidents.\n\n"
+
+    "HR SERVICE MANAGEMENT: Use get_hr_cases to retrieve employee HR requests, "
+    "get_hr_services to explore available HR services, and get_hr_profiles "
+    "to retrieve employee employment information.\n\n"
+
+    "OPERATIONS: Incident tools support read and write operations. HR tools "
+    "are read-only. Never create or update an incident unless the user "
+    "explicitly requests it. HR records cannot be created or modified.\n\n"
+
+    "SEARCH: Use identifier to retrieve one known record and query to search "
+    "multiple records using ServiceNow encoded-query syntax. Search tools "
+    "return 5 records by default. Increase the limit when requested, up to "
+    "SERVICENOW_MAX_LIMIT. All available fields are returned by default.\n\n"
+
+    "REFERENCES: For incident creation and updates, employees can be identified "
+    "by username, email, full name, or sys_id. Assignment groups can be "
+    "identified by exact name or sys_id. The server resolves these references.\n\n"
+
+    "All operations are subject to the configured ServiceNow account's "
+    "permissions and access controls."
 )
 http = httpx.AsyncClient(timeout=httpx.Timeout(30.0, connect=10.0), follow_redirects=False)
 _token: Optional[str] = None
